@@ -1,0 +1,47 @@
+; Sample TeraTerm TTL macro demonstrating the language features.
+/*
+ * Connects over SSH, logs in and runs a command.
+ */
+
+hostname = '192.168.0.1'
+username = 'admin'
+port = 22
+
+; Build the connect command line and connect.
+sprintf2 cmdline '%s:%d /ssh /2 /auth=password /user=%s' hostname port username
+connect cmdline
+if result <> 2 then
+    messagebox 'Failed to connect' 'Error'
+    goto done
+endif
+
+; Wait for the password prompt.
+timeout = 10
+wait 'password:'
+if result = 0 then
+    goto timed_out
+endif
+
+; Sends readme.txt file with the ZMODEM protocol.
+zmodemsend 'readme.txt' 0
+
+getpassword 'pass.dat' username userpass
+sendln userpass
+
+; Run a few commands in a loop.
+count = 0
+for i 1 3
+    sendln 'uptime'
+    wait '$ '
+    count = count + 1
+next
+
+messagebox 'Sent commands' 'Done'
+goto done
+
+:timed_out
+messagebox 'Timed out waiting for prompt' 'Error'
+
+:done
+disconnect
+end

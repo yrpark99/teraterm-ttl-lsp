@@ -1,0 +1,130 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "TeraTerm TTL",
+  "scopeName": "source.ttl",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#labels" },
+    { "include": "#numbers" },
+    { "include": "#control-keywords" },
+    { "include": "#operators" },
+    { "include": "#system-variables" },
+    { "include": "#commands" },
+    { "include": "#identifiers" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.semicolon.ttl",
+          "match": ";.*$"
+        },
+        {
+          "name": "comment.block.ttl",
+          "begin": "/\\*",
+          "end": "\\*/"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.ttl",
+          "begin": "\"",
+          "end": "\"|$",
+          "patterns": [
+            { "name": "constant.character.escape.ttl", "match": "#[0-9]+|#\\$[0-9A-Fa-f]+" }
+          ]
+        },
+        {
+          "name": "string.quoted.single.ttl",
+          "begin": "'",
+          "end": "'|$",
+          "patterns": [
+            { "name": "constant.character.escape.ttl", "match": "#[0-9]+|#\\$[0-9A-Fa-f]+" }
+          ]
+        }
+      ]
+    },
+    "labels": {
+      "patterns": [
+        {
+          "name": "entity.name.label.ttl",
+          "match": "^\\s*(:)([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": { "name": "punctuation.definition.label.ttl" },
+            "2": { "name": "entity.name.label.ttl" }
+          }
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        { "name": "constant.numeric.hex.ttl", "match": "\\$[0-9A-Fa-f]+" },
+        { "name": "constant.numeric.char.ttl", "match": "#\\$?[0-9A-Fa-f]+" },
+        { "name": "constant.numeric.integer.ttl", "match": "\\b[0-9]+\\b" }
+      ]
+    },
+    "control-keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.ttl",
+          "match": "(?i)\\b(if|then|elseif|else|endif|for|next|while|endwhile|do|loop|until|enduntil|break|continue|call|return|goto|include|end|exit|pause|mpause|execcmnd)\\b"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.logical.ttl",
+          "match": "(?i)\\b(and|or|xor|not)\\b"
+        },
+        {
+          "name": "keyword.operator.ttl",
+          "match": "(\\|\\||&&|<<|>>>|>>|<>|!=|==|<=|>=|[-+*/%=<>&|\\^~!])"
+        }
+      ]
+    },
+    "system-variables": {
+      "patterns": [
+        {
+          "name": "variable.language.ttl",
+          "match": "(?i)\\b(inputstr|matchstr|result|timeout|mtimeout|paramcnt|params|param[1-9]|groupmatchstr[1-9])\\b"
+        }
+      ]
+    },
+    "commands": {
+      "patterns": [
+        {
+          "name": "support.function.ttl",
+          "match": "(?i)\\b(bplusrecv|bplussend|callmenu|changedir|clearscreen|closett|connect|cygconnect|disconnect|dispstr|enablekeyb|flushrecv|gethostname|getmodemstatus|gettitle|getttpos|kmtfinish|kmtget|kmtrecv|kmtsend|loadkeymap|logautoclosemode|logclose|loginfo|logopen|logpause|logrotate|logstart|logwrite|quickvanrecv|quickvansend|recvln|recvfile|restoresetup|scprecv|scpsend|sendbinary|sendbreak|sendbroadcast|sendkcode|sendlnbroadcast|sendlnmulticast|sendtext|sendmulticast|sendlnbroadcast|sendln|sendfile|sendmulticast|send|setbaud|setdebug|setdtr|setecho|setflowctrl|setmulticastname|setrts|setserialdelaychar|setserialdelayline|setspeed|setsync|settitle|showtt|testlink|unlink|wait4all|waitevent|waitln|waitn|waitrecv|waitregex|wait|xmodemrecv|xmodemsend|ymodemrecv|ymodemsend|zmodemrecv|zmodemsend)\\b"
+        },
+        {
+          "name": "support.function.ttl",
+          "match": "(?i)\\b(code2str|expandenv|int2str|regexoption|sprintf2|sprintf|str2code|str2int|strcompare|strconcat|strcopy|strinsert|strjoin|strlen|strmatch|strremove|strreplace|strscan|strspecial|strsplit|strtrim|tolower|toupper)\\b"
+        },
+        {
+          "name": "support.function.ttl",
+          "match": "(?i)\\b(basename|dirname|fileclose|fileconcat|filecopy|filecreate|filedelete|filelock|filemarkptr|fileopen|filereadln|fileread|filerename|filesearch|fileseekback|fileseek|filestat|filestrseek2|filestrseek|filetruncate|fileunlock|filewriteln|filewrite|findfirst|findnext|findclose|foldercreate|folderdelete|foldersearch|getdir|getfileattr|makepath|setdir|setfileattr)\\b"
+        },
+        {
+          "name": "support.function.ttl",
+          "match": "(?i)\\b(delpassword2|delpassword|getpassword2|getpassword|ispassword2|ispassword|passwordbox|setpassword2|setpassword)\\b"
+        },
+        {
+          "name": "support.function.ttl",
+          "match": "(?i)\\b(beep|bringupbox|checksum8file|checksum8|checksum16file|checksum16|checksum32file|checksum32|closesbox|clipb2var|crc16file|crc16|crc32file|crc32|dirnamebox|filenamebox|getdate|getenv|getipv4addr|getipv6addr|getspecialfolder|gettime|getttdir|getver|ifdefined|inputbox|intdim|listbox|messagebox|random|rotateleft|rotateright|setdate|setdlgpos|setenv|setexitcode|settime|statusbox|strdim|uptime|var2clipb|yesnobox|exec|show)\\b"
+        }
+      ]
+    },
+    "identifiers": {
+      "patterns": [
+        {
+          "name": "variable.other.ttl",
+          "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b"
+        }
+      ]
+    }
+  }
+}

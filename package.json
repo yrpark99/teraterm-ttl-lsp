@@ -1,0 +1,103 @@
+{
+  "name": "teraterm-ttl-lsp",
+  "displayName": "TeraTerm TTL",
+  "description": "LSP for TeraTerm TTL macro files",
+  "version": "0.1.0",
+  "publisher": "yrpark99",
+  "license": "MIT",
+  "icon": "assets/logo.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yrpark99/teraterm-ttl-lsp.git"
+  },
+  "engines": {
+    "vscode": "^1.94.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Linters"
+  ],
+  "keywords": [
+    "teraterm",
+    "ttl",
+    "tera term",
+    "macro",
+    "lsp"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onLanguage:ttl"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "ttl",
+        "aliases": [
+          "TeraTerm TTL",
+          "ttl"
+        ],
+        "extensions": [
+          ".ttl"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "ttl",
+        "scopeName": "source.ttl",
+        "path": "./syntaxes/ttl.tmLanguage.json"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "TeraTerm TTL",
+      "properties": {
+        "ttl.diagnostics.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable diagnostics (problem reporting) for TTL files."
+        },
+        "ttl.diagnostics.reportUnknownCommands": {
+          "type": "boolean",
+          "default": true,
+          "description": "Report a warning when a statement starts with an identifier that is not a known TTL command, keyword, or assignment."
+        },
+        "ttl.maxNumberOfProblems": {
+          "type": "number",
+          "default": 200,
+          "description": "Maximum number of problems reported per file."
+        },
+        "ttl.trace.server": {
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Trace the communication between VS Code and the TTL language server."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "gen:commands": "node ./scripts/gen-commands.js",
+    "check-types": "tsc -p ./client --noEmit && tsc -p ./server --noEmit",
+    "compile": "npm run check-types && node esbuild.js",
+    "watch": "node esbuild.js --watch",
+    "package": "npm run check-types && node esbuild.js --production",
+    "vscode:prepublish": "npm run package"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1",
+    "vscode-languageserver": "^9.0.1",
+    "vscode-languageserver-textdocument": "^1.0.12"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "~1.94.0",
+    "esbuild": "^0.28.1",
+    "typescript": "^5.4.0"
+  }
+}
